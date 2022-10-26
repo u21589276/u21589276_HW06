@@ -20,6 +20,7 @@ namespace u21589276_HW06.Views
         {
             ViewBag.CurrentSort = sortOrder;
 
+            //
             if (searchString != null)
             {
                 page = 1;
@@ -29,11 +30,19 @@ namespace u21589276_HW06.Views
                 searchString = currentFilter;
             }
 
+            //access products model
+            var products = from p in db.products select p;
+            //return results according to search
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                products = products.Where(p => p.product_name.Contains(searchString));
+            }
+
             ViewBag.CurrentFilter = searchString;
 
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(db.products.ToList().ToPagedList(pageNumber, pageSize));
+            return View(products.ToList().ToPagedList(pageNumber, pageSize));
         }
 
         // GET: products/Details/5
