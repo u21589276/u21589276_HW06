@@ -7,6 +7,7 @@ using System.Net;
 using System.Web;
 using System.Web.Mvc;
 using u21589276_HW06.Models;
+using PagedList;
 
 namespace u21589276_HW06.Views
 {
@@ -15,8 +16,23 @@ namespace u21589276_HW06.Views
         private BikeStoresEntities db = new BikeStoresEntities();
 
         // GET: products
-        public ActionResult Index()
+        public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            ViewBag.CurrentSort = sortOrder;
+
+            if (searchString != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                searchString = currentFilter;
+            }
+
+            ViewBag.CurrentFilter = searchString;
+
+            int pageSize = 3;
+            int pageNumber = (page ?? 1);
             return View(db.products.ToList());
         }
 

@@ -4,10 +4,17 @@
     ViewBag.Title = "Index";
 }
 
-<h2>Index</h2>
+<h1>Products</h1>
 
+@using (Html.BeginForm())
+{
+    <p>
+        Find by name: @Html.TextBox("SearchString")
+        <input type="submit" class="btn btn-primary" value="Search" />
+    </p>
+}
 <p>
-    @Html.ActionLink("Create New", "Create", new { @class = "btn btn-info" })
+    @Html.ActionLink("Create", "Create", new { @class = "btn btn-info" })
 </p>
 <table class="table">
     <tr>
@@ -18,19 +25,20 @@
         <th>Category</th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>@item.product_name</td>
-        <td>@item.model_year</td>
-        <td>@item.list_price</td>
-        <td>***missing</td>
-        <td>***missing</td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new {  id=item.product_id  }, new { @class = "btn btn-primary"}) |
-            @Html.ActionLink("Details", "Details", new { id=item.product_id }, new { @class = "btn btn-info" }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.product_id }, new { @class = "btn btn-danger" })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>@item.product_name</td>
+            <td>@item.model_year</td>
+            <td>@item.list_price</td>
+            <td>***missing</td>
+            <td>***missing</td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { id = item.product_id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.product_id }, new { @class = "btn btn-info" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.product_id }, new { @class = "btn btn-danger" })
+            </td>
+        </tr>
+    }
 
 </table>
