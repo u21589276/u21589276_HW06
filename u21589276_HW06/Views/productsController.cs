@@ -31,9 +31,9 @@ namespace u21589276_HW06.Views
 
             ViewBag.CurrentFilter = searchString;
 
-            int pageSize = 3;
+            int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(db.products.ToList());
+            return View(db.products.ToList().ToPagedList(pageNumber, pageSize));
         }
 
         // GET: products/Details/5
