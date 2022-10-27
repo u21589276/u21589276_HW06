@@ -1,0 +1,14 @@
+﻿
+@{
+    ViewBag.Title = "Orders";
+}
+
+<h1>Orders</h1>
+
+@using (Html.BeginForm())
+{
+    <p class="form-inline">
+        <input type="date" class="form-control" placeholder="Enter product name..." name="dateSearch" />
+        <input type="submit" class="btn btn-primary" value="Search" />
+    </p>
+}

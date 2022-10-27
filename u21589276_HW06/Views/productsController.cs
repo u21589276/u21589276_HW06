@@ -45,7 +45,7 @@ namespace u21589276_HW06.Views
             return View(products.ToList().ToPagedList(pageNumber, pageSize));
         }
 
-        // GET: products/Details/5
+        // GET: products/Details/
         public ActionResult Details(int? id)
         {
             if (id == null)
