@@ -31,7 +31,8 @@ namespace u21589276_HW06.Views
             }
 
             //access products model
-            var products = from p in db.products select p;
+            var products = from p in db.products join b in db.brands
+          
             //return results according to search
             if (!String.IsNullOrEmpty(searchString))
             {
