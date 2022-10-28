@@ -31,13 +31,14 @@ namespace u21589276_HW06.Views
             }
 
             //access products model
-            var products = from p in db.products join b in db.brands
+            var products = from p in db.products select p;
           
             //return results according to search
             if (!String.IsNullOrEmpty(searchString))
             {
                 products = products.Where(p => p.product_name.Contains(searchString));
             }
+
 
             ViewBag.CurrentFilter = searchString;
 
