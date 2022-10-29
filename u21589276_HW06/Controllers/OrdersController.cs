@@ -15,9 +15,9 @@ namespace u21589276_HW06.Controllers
     {
         private BikeStoresEntities db = new BikeStoresEntities();
         // GET: Orders
-        public ActionResult Orders()
+        public ActionResult Orders( string dateSearch)
         {
-            return View();
+            return View(db.orders.ToList());
         }
     }
 }
