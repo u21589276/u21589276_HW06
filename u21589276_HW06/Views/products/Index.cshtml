@@ -21,9 +21,7 @@
     </p>
 }
 
-@*Html.ActionLink("Create", "Create", new { @class = "btn btn-info" })*@
 <button type="button" class="btn btn-info" id="createbtn">Create</button>
-
 @*<a href="@Url.Action("Create","products")" class="btn btn-info" id="createbtn">Create</a>*@
 
 <br />
@@ -59,9 +57,7 @@
 
 <br />
 @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("Index",
-    new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 <!-- Modal -->
 <div class="modal fade" id="produuctsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
@@ -114,7 +110,7 @@
                     $('#produuctsModalCenter').modal('show');
                 },
                 error: function () {
-                    alert("There is some problem in the service! Check Controller or view.")
+                    alert("There is some problem in the Details service! Check Controller or view.")
                 }
             });
         });
@@ -132,7 +128,7 @@
                     $('#produuctsModalCenter').modal('show');
                 },
                 error: function () {
-                    alert("There is some problem in the service! Check Controller or view.")
+                    alert("There is some problem in the Edit service! Check Controller or view.")
                 }
             });
         });
@@ -149,7 +145,7 @@
                     $('#produuctsModalCenter').modal('show');
                 },
                 error: function () {
-                    alert("There is some problem in the service! Check Controller or view.")
+                    alert("There is some problem in the Delete service! Check Controller or view.")
                 }
             });
         });

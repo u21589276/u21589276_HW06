@@ -30,7 +30,7 @@ namespace u21589276_HW06.Controllers
                               };
 
             reportdata = new reportVm
-            {
+            {   
                 Jan = mtBike.ToList().Where(u => Convert.ToDateTime(u.order_date).Month == 1).Count(),
                 Feb = mtBike.ToList().Where(u => Convert.ToDateTime(u.order_date).Month == 2).Count(),
                 Mar = mtBike.ToList().Where(u => Convert.ToDateTime(u.order_date).Month == 3).Count(),

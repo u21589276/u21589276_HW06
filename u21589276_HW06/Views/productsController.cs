@@ -54,7 +54,10 @@ namespace u21589276_HW06.Views
             {
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
+
+            //var product = db.products.ToList().Where(p => p.product_id == id);
             product product = db.products.Find(id);
+
             if (product == null)
             {
                 return HttpNotFound();
