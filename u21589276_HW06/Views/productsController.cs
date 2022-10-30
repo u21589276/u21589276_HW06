@@ -1,13 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.Entity;
-using System.Linq;
+﻿using PagedList;
+using System;
 using System.Net;
-using System.Web;
+using System.Data;
+using System.Linq;
 using System.Web.Mvc;
 using u21589276_HW06.Models;
-using PagedList;
 
 namespace u21589276_HW06.Views
 {
@@ -49,6 +46,13 @@ namespace u21589276_HW06.Views
             return View(productsVModel);
         }
 
+        // GET: products/Create
+        public ActionResult Create()
+        {
+            return View();
+        }
+
+        
         // GET: products/Details/
         public ActionResult Details(int? id)
         {
@@ -57,103 +61,113 @@ namespace u21589276_HW06.Views
                 return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
             }
 
-            //var product = db.products.ToList().Where(p => p.product_id == id);
-            product product = db.products.Find(id);
+            var productdetails = new detailsVM();
+            productdetails.Products = db.products.Where(p => p.product_id == id).ToList();
+            productdetails.Brand = db.brands.ToList();
+            productdetails.Categories = db.categories.ToList();
+            productdetails.Stock = db.stocks.Where(s => s.product_id == id).ToList();
+            productdetails.Stores = db.stores.ToList();
+            //product product = db.products.Find(id);
 
-            if (product == null)
+            if (productdetails == null)
             {
                 return HttpNotFound();
             }
-            return View(product);
+            return View(productdetails);
         }
 
-        // GET: products/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
-
-        // POST: products/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "product_id,product_name,brand_id,category_id,model_year,list_price")] product product)
+        public ActionResult Createprod(string name, int brand, int category, short modelyear, decimal price)
         {
-            if (ModelState.IsValid)
-            {
-                db.products.Add(product);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            return View(product);
-        }
-
-        // GET: products/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            product product = db.products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        // POST: products/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "product_id,product_name,brand_id,category_id,model_year,list_price")] product product)
-        {
-            if (ModelState.IsValid)
-            {
-                db.Entry(product).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            return View(product);
-        }
-
-        // GET: products/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            product product = db.products.Find(id);
-            if (product == null)
-            {
-                return HttpNotFound();
-            }
-            return View(product);
-        }
-
-        // POST: products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            product product = db.products.Find(id);
-            db.products.Remove(product);
+            db.products.Add(new product { product_name = name, brand_id = brand, category_id = category, list_price = price, model_year = modelyear });
             db.SaveChanges();
-            return RedirectToAction("Index");
+            string message = "Product has been added.";
+
+            return Json(new { Message = message, JsonRequestBehavior.AllowGet });
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+
+        //// POST: products/Create
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Create([Bind(Include = "product_id,product_name,brand_id,category_id,model_year,list_price")] product product)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.products.Add(product);
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+
+        //    return View(product);
+        //}
+
+        //// GET: products/Edit/5
+        //public ActionResult Edit(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    product product = db.products.Find(id);
+        //    if (product == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(product);
+        //}
+
+        //// POST: products/Edit/5
+        //// To protect from overposting attacks, enable the specific properties you want to bind to, for 
+        //// more details see https://go.microsoft.com/fwlink/?LinkId=317598.
+        //[HttpPost]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult Edit([Bind(Include = "product_id,product_name,brand_id,category_id,model_year,list_price")] product product)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        db.Entry(product).State = EntityState.Modified;
+        //        db.SaveChanges();
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View(product);
+        //}
+
+        //// GET: products/Delete/5
+        //public ActionResult Delete(int? id)
+        //{
+        //    if (id == null)
+        //    {
+        //        return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+        //    }
+        //    product product = db.products.Find(id);
+        //    if (product == null)
+        //    {
+        //        return HttpNotFound();
+        //    }
+        //    return View(product);
+        //}
+
+        //// POST: products/Delete/5
+        //[HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        //public ActionResult DeleteConfirmed(int id)
+        //{
+        //    product product = db.products.Find(id);
+        //    db.products.Remove(product);
+        //    db.SaveChanges();
+        //    return RedirectToAction("Index");
+        //}
+
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

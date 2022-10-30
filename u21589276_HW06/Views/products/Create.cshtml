@@ -1,4 +1,4 @@
-﻿@model u21589276_HW06.Models.product
+﻿@model u21589276_HW06.Models.productsVm
 
 @{
     Layout = null;
@@ -8,61 +8,75 @@
 }
 
 <h2>Create Product</h2>
-
-
-@using (Html.BeginForm())
-{
-    @Html.AntiForgeryToken()
-
+<br />
+<div class="container">
     <div class="form-horizontal">
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <div class="form-group">
-            @Html.LabelFor(model => model.product_name, htmlAttributes: new { @class = "control-label col-md-2" })
+            
             <div class="col-md-10">
-                @Html.EditorFor(model => model.product_name, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.product_name, "", new { @class = "text-danger" })
+                <b>Product Name</b><input type="text" id="prodName" class="form-control" />
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.brand_id, htmlAttributes: new { @class = "control-label col-md-2" })
+            
             <div class="col-md-10">
-                @Html.EditorFor(model => model.brand_id, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.brand_id, "", new { @class = "text-danger" })
+                <b>Brand ID</b><input type="text" id="brandID" class="form-control" />
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.category_id, htmlAttributes: new { @class = "control-label col-md-2" })
+           
             <div class="col-md-10">
-                @Html.EditorFor(model => model.category_id, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.category_id, "", new { @class = "text-danger" })
+                <b>Category ID</b><input type="text" id="prodCat" class="form-control" />
+        </div>
+        </div>
+
+        <div class="form-group">
+           
+            <div class="col-md-10">
+                <b>Model year</b><input type="text" id="modelYear" class="form-control" />
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.model_year, htmlAttributes: new { @class = "control-label col-md-2" })
+            
             <div class="col-md-10">
-                @Html.EditorFor(model => model.model_year, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.model_year, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.list_price, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.list_price, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.list_price, "", new { @class = "text-danger" })
+                <b>Price</b><input type="text" id="prodPrice" class="form-control" />
             </div>
         </div>
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-primary" />
+                <button id="createprodbtn" class="btn btn-primary">Create</button>
             </div>
         </div>
     </div>
-}
+</div>
+
+<script type="text/javascript">
+    $(document).ready(() =>
+    {
+        $("#createprodbtn").on("click", () => {
+            $.post({
+                url: "@Url.Action("Createprod", "products")",
+                data: {
+                    name: $("#prodName").val(),
+                    price: $("#prodPrice").val(),
+                    category: $("#prodCat").val(),
+                    modelyear: $("#modelYear").val(),
+                    brand: $("#brandID").val()
+                },
+                success: (data) => {
+                    let msg = JSON.parse(data);
+
+                    alert(msg.message);
+                }
+            });
+        });
+    }
+</script>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")

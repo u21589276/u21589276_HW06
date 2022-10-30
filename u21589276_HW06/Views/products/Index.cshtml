@@ -78,7 +78,7 @@
     <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="exampleModalLongTitle">Modal title</h5>
+                <h5 class="modal-title" id="exampleModalLongTitle"></h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -112,22 +112,22 @@
         });
 
         //returs details view
-        $(document).on('click', '.details', function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
+        //$(document).on('click', '.details', function (event) {
+        //    event.preventDefault();
+        //    event.stopImmediatePropagation();
 
-            $.ajax({
-                url: '/products/Details',
-                type: 'GET',
-                success: function (data) {
-                    $('#prodModalbody').html(data);
-                    $('#produuctsModalCenter').modal('show');
-                },
-                error: function () {
-                    alert("There is some problem in the Details service! Check Controller or view.")
-                }
-            });
-        });
+        //    $.ajax({
+        //        url: '/products/Details',
+        //        type: 'GET',
+        //        success: function (data) {
+        //            $('#prodModalbody').html(data);
+        //            $('#produuctsModalCenter').modal('show');
+        //        },
+        //        error: function () {
+        //            alert("There is some problem in the Details service! Check Controller or view.")
+        //        }
+        //    });
+        //});
 
         //returns Edit view
         $(document).on('click', '.edit', function (event) {

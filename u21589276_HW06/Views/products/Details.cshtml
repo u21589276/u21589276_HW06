@@ -1,4 +1,4 @@
-﻿@model u21589276_HW06.Models.product
+﻿@model u21589276_HW06.Models.detailsVM
 
 @{
     Layout = null;
@@ -9,14 +9,69 @@
 }
 
 <h2>Details</h2>
+<br />
 
-<div>
-    <h4>product</h4>
-    <hr />
-    <dl class="dl-horizontal">
-    </dl>
+<div class="container">
+    <div class="card">
+        <div class="card-header">
+            @Model.Products[0].product_name
+        </div>
+        <div class="card-body">
+            <p><b>Name:</b> @Model.Products[0].product_name</p>
+            <p><b>Year:</b> @Model.Products[0].model_year</p>
+            <p><b>Price:</b> @Model.Products[0].list_price</p>
+            <p><b>Brand:</b> 
+            @foreach (var brand in Model.Brand) 
+            { 
+                if (brand.brand_id == Model.Products[0].brand_id)
+                { 
+                    @brand.brand_name
+                } 
+            }</p>
+
+            <p><b>Category:</b>
+            @foreach (var category in Model.Categories) 
+            { 
+                if (category.category_id == Model.Products[0].category_id)
+                { 
+                    @category.category_name
+                } 
+            }</p>
+            <br />
+        </div>
+        <ul class="list-group list-group-flush">
+            <li class="list-group-item">
+                <div class="row">
+                    <div class="col-sm-6"><b>Store</b></div>
+                    <div class="col-sm-6"><b>Quantity</b></div>
+                </div>
+            </li>
+            @foreach (var store in Model.Stores)
+            {
+                <li class="list-group-item">
+                    <div class="row">
+                        <div class="col-sm-6">@store.store_name</div>
+                        <div class="col-sm-6">
+                            @foreach (var stocks in Model.Stock)
+                            {
+                                if (store.store_id == stocks.store_id)
+                                {
+                                    if (stocks.quantity != 0)
+                                    {
+                                        @stocks.quantity
+                                    }
+                                    else if (stocks.quantity == 0)
+                                    {
+                                        <span style="color:red">Out of Stock</span>
+                                    }
+
+                                }
+
+                            }
+                        </div>
+                    </div>
+                </li>
+            }
+        </ul>
+    </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

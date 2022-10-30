@@ -20,32 +20,30 @@ namespace u21589276_HW06.Controllers
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            //ViewBag.CurrentSort = sortOrder;
-            //if (dateSearch != null)
-            //{
-            //    page = 1;
-            //}
-            //else
-            //{
-            //    dateSearch = currentFilter;
-            //}
-            //var allOrders = new[] 
-            //{
-            //    new ordersVm {OrderItems = db.order_items.ToList(), Orders = db.orders.ToList(), Products = db.products.ToList()}
-            //};
-            ////return results according to search
-            //if (!String.IsNullOrEmpty(dateSearch))
-            //{
-            //    allOrders[0].Orders = db.orders.Where(p => p.order_date.ToString().Contains(dateSearch)).ToList();
-            //}
-            //ViewBag.CurrentFilter = dateSearch;
+            ViewBag.CurrentSort = sortOrder;
+            if (dateSearch != null)
+            {
+                page = 1;
+            }
+            else
+            {
+                dateSearch = currentFilter;
+            }
 
             var ordersviewModel = new ordersVm();
             ordersviewModel.Orders = db.orders.ToList().ToPagedList(pageNumber, pageSize);
             ordersviewModel.OrderItems = db.order_items.ToList();
             ordersviewModel.Products = db.products.ToList();
 
-            return View(ordersviewModel);//allOrders.ToList().ToPagedList(pageNumber, pageSize));
+            //return results according to search
+            if (!String.IsNullOrEmpty(dateSearch))
+            {
+                ordersviewModel.Orders = db.orders.ToList().Where(p => p.order_date.ToString().Contains(dateSearch)).ToPagedList(pageNumber, pageSize);
+            }
+            ViewBag.CurrentFilter = dateSearch;
+
+           
+            return View(ordersviewModel);
         }
     }
 }
