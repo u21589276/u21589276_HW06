@@ -1,4 +1,4 @@
-﻿@model PagedList.IPagedList<u21589276_HW06.Models.product>
+﻿@model u21589276_HW06.Models.productsVm
 @using PagedList.Mvc;
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
@@ -16,7 +16,7 @@
 @using (Html.BeginForm())
 {
     <p class="form-inline">
-        <input type="text" class="form-control" placeholder="Enter product name..." name="SearchString" />
+        <input type="text" class="form-control" placeholder="Enter product name..." name="searchString" />
         <input type="submit" class="btn btn-primary" value="Search" />
     </p>
 }
@@ -37,14 +37,28 @@
         <th> </th>
     </tr>
 
-    @foreach (var item in Model)
+    @foreach (var item in Model.Products)
     {
         <tr>
             <td>@item.product_name</td>
             <td>@item.model_year</td>
-            <td>@item.list_price</td>
-            <td></td>
-            <td>***missing</td>
+            <td>@item.list_price</td> 
+            @foreach (var brand in Model.Brand)
+                {
+                    if(item.brand_id == brand.brand_id)
+                    {
+                        <td>@brand.brand_name</td>
+                    }
+                    
+                }
+
+            @foreach (var category in Model.Categories)
+                {
+                    if(item.category_id == category.category_id)
+                    {
+                        <td>@category.category_name</td>
+                    }
+                }
             <td>
                 @Html.ActionLink("Edit", "Edit", new { id= item.product_id }, new { @class = "btn btn-primary edit" }) |
                 @Html.ActionLink("Details", "Details", new { id= item.product_id }, new { @class = "btn btn-info details" }) |
@@ -56,8 +70,8 @@
 </table>
 
 <br />
-@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+@(Model.Products.PageCount < Model.Products.PageNumber ? 0 : Model.Products.PageNumber) of @Model.Products.PageCount
+@Html.PagedListPager(Model.Products, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
 
 <!-- Modal -->
 <div class="modal fade" id="produuctsModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">

@@ -11,7 +11,7 @@ namespace u21589276_HW06.Models
 {
     using System;
     using System.Collections.Generic;
-    
+    using u21589276_HW06.Models;
     public partial class product
     {
         public int product_id { get; set; }
@@ -21,4 +21,5 @@ namespace u21589276_HW06.Models
         public short model_year { get; set; }
         public decimal list_price { get; set; }
     }
+
 }

@@ -14,10 +14,12 @@ namespace u21589276_HW06.Views
     public class productsController : Controller
     {
         private BikeStoresEntities db = new BikeStoresEntities();
-
         // GET: products
         public ActionResult Index(string sortOrder, string currentFilter, string searchString, int? page)
         {
+            int pageSize = 10;
+            int pageNumber = (page ?? 1);
+
             ViewBag.CurrentSort = sortOrder;
 
             //
@@ -31,20 +33,20 @@ namespace u21589276_HW06.Views
             }
 
             //access products model
-            var products = from p in db.products select p;
-          
+            var productsVModel = new productsVm();
+            productsVModel.Brand = db.brands.ToList();
+            productsVModel.Categories = db.categories.ToList();
+            productsVModel.Products = db.products.ToList().ToPagedList(pageNumber, pageSize);
+
             //return results according to search
             if (!String.IsNullOrEmpty(searchString))
             {
-                products = products.Where(p => p.product_name.Contains(searchString));
+                productsVModel.Products = db.products.ToList().Where(p => p.product_name.Contains(searchString)).ToPagedList(pageNumber, pageSize);
             }
-
 
             ViewBag.CurrentFilter = searchString;
 
-            int pageSize = 10;
-            int pageNumber = (page ?? 1);
-            return View(products.ToList().ToPagedList(pageNumber, pageSize));
+            return View(productsVModel);
         }
 
         // GET: products/Details/

@@ -9,6 +9,7 @@ namespace u21589276_HW06.Models
     {
         public List<product> Products { get; set; }
         public List<order_items> OrderItems { get; set; }
-        public List<order> Orders { get; set; }
+        public PagedList.IPagedList<order> Orders { get; set; }
+
     }
 }

@@ -15,31 +15,37 @@ namespace u21589276_HW06.Controllers
     {
         private BikeStoresEntities db = new BikeStoresEntities();
         // GET: Orders
-        public ActionResult Orders(string dateSearch, int? page)
+        public ActionResult Orders(string dateSearch,  string currentFilter, string sortOrder, int? page)
         {
-            //var orderItems = from pr in db.products join oitm in db.order_items 
-            //                 on pr.product_id equals oitm.order_id join od in db.orders 
-            //                 on oitm.order_id equals od.order_id
-            //                 orderby oitm.item_id
-            //                 select new
-            //                 {
-            //                     pr.product_name,
-            //                     pr.list_price,
-            //                     oitm.quantity,
-            //                     oitm.item_id,
-            //                     od.order_id,
-            //                     od.order_date
-            //                 };
-
-            var allOrders = new[]
-            {
-                new ordersVm {OrderItems = db.order_items.ToList(), Orders = db.orders.ToList(), Products = db.products.ToList()}
-            };
-
-
             int pageSize = 10;
             int pageNumber = (page ?? 1);
-            return View(allOrders.ToPagedList(pageNumber, pageSize));
+
+            //ViewBag.CurrentSort = sortOrder;
+            //if (dateSearch != null)
+            //{
+            //    page = 1;
+            //}
+            //else
+            //{
+            //    dateSearch = currentFilter;
+            //}
+            //var allOrders = new[] 
+            //{
+            //    new ordersVm {OrderItems = db.order_items.ToList(), Orders = db.orders.ToList(), Products = db.products.ToList()}
+            //};
+            ////return results according to search
+            //if (!String.IsNullOrEmpty(dateSearch))
+            //{
+            //    allOrders[0].Orders = db.orders.Where(p => p.order_date.ToString().Contains(dateSearch)).ToList();
+            //}
+            //ViewBag.CurrentFilter = dateSearch;
+
+            var ordersviewModel = new ordersVm();
+            ordersviewModel.Orders = db.orders.ToList().ToPagedList(pageNumber, pageSize);
+            ordersviewModel.OrderItems = db.order_items.ToList();
+            ordersviewModel.Products = db.products.ToList();
+
+            return View(ordersviewModel);//allOrders.ToList().ToPagedList(pageNumber, pageSize));
         }
     }
 }

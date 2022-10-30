@@ -1,14 +1,14 @@
-﻿@model PagedList.IPagedList<u21589276_HW06.Models.ordersVm>
+﻿@model u21589276_HW06.Models.ordersVm
 @using PagedList.Mvc;
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
+
 @{
     ViewBag.Title = "Orders";
 }
 
-@{ var total = 0;
-
-
+@{ 
+    var total = 0;
 
 }
 
@@ -22,9 +22,8 @@
     </p>
 }
 
-<h4>@Model[0].Orders.Count</h4>
 
-@foreach (var order in Model[0].Orders)
+@foreach (var order in Model.Orders)
 {
     <h3>Order @order.order_id - @order.order_date</h3>
 
@@ -38,21 +37,21 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var orderItem in Model[0].OrderItems)
+            @foreach (var orderItem in Model.OrderItems)
             {
                 if (order.order_id == orderItem.order_id)
                 {
                     <tr>
-                        @foreach (var product in Model[0].Products)
+                        @foreach (var product in Model.Products)
                         {
                             if (orderItem.product_id == product.product_id)
                             {
                                 <td>@product.product_name</td>
-                                <td>@product.list_price</td>
+                                <td id="prc @product.product_id">@product.list_price</td>
                             }
                         }
-                        <td>@orderItem.quantity</td>
-                        <td></td>
+                        <td id="qty @orderItem.product_id">@orderItem.quantity</td>
+                        <td id="lineTot"></td>
                     </tr>
                 }
             }
@@ -62,12 +61,12 @@
                 <td></td>
                 <td></td>
                 <td>Grand Total</td>
-                <td></td>
+                <td id="grandTot"></td>
             </tr>
         </tfoot>
     </table>
     <br />
 }
 
-@(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber)of @Model.PageCount
-@Html.PagedListPager(Model, page => Url.Action("Index", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
+@(Model.Orders.PageCount < Model.Orders.PageNumber ? 0 : Model.Orders.PageNumber)of @Model.Orders.PageCount
+@Html.PagedListPager(Model.Orders, page => Url.Action("Orders", new { page, sortOrder = ViewBag.CurrentSort, currentFilter = ViewBag.CurrentFilter }))
