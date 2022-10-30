@@ -10,6 +10,7 @@
     ViewBag.Title = "Index";
 }
 
+
 <h1>Products</h1>
 
 
@@ -39,30 +40,33 @@
 
     @foreach (var item in Model.Products)
     {
+        var btndetailsId = "dt " + item.product_id;
+
         <tr>
             <td>@item.product_name</td>
             <td>@item.model_year</td>
-            <td>@item.list_price</td> 
+            <td>@item.list_price</td>
             @foreach (var brand in Model.Brand)
+            {
+                if (item.brand_id == brand.brand_id)
                 {
-                    if(item.brand_id == brand.brand_id)
-                    {
-                        <td>@brand.brand_name</td>
-                    }
-                    
+                    <td>@brand.brand_name</td>
                 }
 
+            }
+
             @foreach (var category in Model.Categories)
+            {
+                if (item.category_id == category.category_id)
                 {
-                    if(item.category_id == category.category_id)
-                    {
-                        <td>@category.category_name</td>
-                    }
+                    <td>@category.category_name</td>
                 }
+            }
             <td>
-                @Html.ActionLink("Edit", "Edit", new { id= item.product_id }, new { @class = "btn btn-primary edit" }) |
-                @Html.ActionLink("Details", "Details", new { id= item.product_id }, new { @class = "btn btn-info details" }) |
-                @Html.ActionLink("Delete", "Delete", new { id= item.product_id }, new { @class = "btn btn-danger delete" })
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.product_id }, new { @class = "btn btn-primary" }) |
+                @Html.ActionLink("Details", "Details", new { id = item.product_id }, new { @class = "btn btn-info details" }) |
+                @Html.ActionLink("Delete", "Delete", new { id = item.product_id }, new { @class = "btn btn-danger" })
             </td>
         </tr>
     }
@@ -84,84 +88,100 @@
                 </button>
             </div>
             <div id="prodModalbody" class="modal-body">
-                
+
             </div>
         </div>
     </div>
 </div>
 
+
 <script type="text/javascript">
-    $(document).ready(function () {
+        $(document).ready(function () {
 
-        //returs create view
-        $(document).on('click', '#createbtn', function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
+            //returs create view
+            $(document).on('click', '#createbtn', function (event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
 
-            $.ajax({
-                url: '/products/Create',
-                type: 'GET',
-                success: function (data) {
-                    $('#prodModalbody').html(data);
-                    $('#produuctsModalCenter').modal('show');
-                },
-                error: function () {
-                    alert("There is some problem in the service! Check Controller or view.")
-                }
+                $.ajax({
+                    url: '/products/Create',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#prodModalbody').html(data);
+                        $('#produuctsModalCenter').modal('show');
+                    },
+                    error: function () {
+                        alert("There is some problem in the service! Check Controller or view.")
+                    }
+                });
+            });
+
+            $(".detail").click(function (e) {
+                $.ajax({
+                    url: '/products/Details',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#prodModalbody').html(data);
+                        $('#produuctsModalCenter').modal('show');
+                    },
+                    error: function () {
+                        alert("There is some problem in the Details service! Check Controller or view.")
+                    }
+                });
+            });
+
+            //////returs details view
+            //   $(document).on('click', ".details", function (event) {
+            //       event.preventDefault();
+            //       event.stopImmediatePropagation();
+
+            //       $.ajax({
+            //           url: '/products/Details',
+            //           type: 'GET',
+            //           success: function (data) {
+            //               $('#prodModalbody').html(data);
+            //               $('#produuctsModalCenter').modal('show');
+            //           },
+            //           error: function () {
+            //               alert("There is some problem in the Details service! Check Controller or view.")
+            //           }
+            //       });
+            //   });
+
+
+            //returns Edit view
+            $(document).on('click', '#ED', function (event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+
+                $.ajax({
+                    url: '/products/Edit',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#prodModalbody').html(data);
+                        $('#produuctsModalCenter').modal('show');
+                    },
+                    error: function () {
+                        alert("There is some problem in the Edit service! Check Controller or view.")
+                    }
+                });
+            });
+
+            $(document).on('click', '#', function (event) {
+                event.preventDefault();
+                event.stopImmediatePropagation();
+
+                $.ajax({
+                    url: '/products/Delete',
+                    type: 'GET',
+                    success: function (data) {
+                        $('#prodModalbody').html(data);
+                        $('#produuctsModalCenter').modal('show');
+                    },
+                    error: function () {
+                        alert("There is some problem in the Delete service! Check Controller or view.")
+                    }
+                });
             });
         });
-
-        //returs details view
-        //$(document).on('click', '.details', function (event) {
-        //    event.preventDefault();
-        //    event.stopImmediatePropagation();
-
-        //    $.ajax({
-        //        url: '/products/Details',
-        //        type: 'GET',
-        //        success: function (data) {
-        //            $('#prodModalbody').html(data);
-        //            $('#produuctsModalCenter').modal('show');
-        //        },
-        //        error: function () {
-        //            alert("There is some problem in the Details service! Check Controller or view.")
-        //        }
-        //    });
-        //});
-
-        //returns Edit view
-        $(document).on('click', '.edit', function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-
-            $.ajax({
-                url: '/products/Edit',
-                type: 'GET',
-                success: function (data) {
-                    $('#prodModalbody').html(data);
-                    $('#produuctsModalCenter').modal('show');
-                },
-                error: function () {
-                    alert("There is some problem in the Edit service! Check Controller or view.")
-                }
-            });
-        });
-
-        $(document).on('click', '.delete', function (event) {
-            event.preventDefault();
-            event.stopImmediatePropagation();
-
-            $.ajax({
-                url: '/products/Delete',
-                type: 'GET',
-                success: function (data) {
-                    $('#prodModalbody').html(data);
-                    $('#produuctsModalCenter').modal('show');
-                },
-                error: function () {
-                    alert("There is some problem in the Delete service! Check Controller or view.")
-                }
-            });
-        });
-    });
 </script>
