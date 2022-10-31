@@ -1,6 +1,9 @@
 ﻿@model List<u21589276_HW06.Models.product>
 
 @{
+    Layout = null;
+}
+@{
     ViewBag.Title = "Edit";
 }
 
@@ -10,13 +13,13 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
 
         <h4>product</h4>
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         <label>Product ID</label>
-        @Html.TextBoxFor(model => model[0].product_id, new { @class = "form-control"})<br />
+        @Html.TextBoxFor(model => model[0].product_id, new { @class = "form-control" })<br />
         <label>Product Name</label>
         @Html.TextBoxFor(model => model[0].product_name, new { @class = "form-control" })<br />
         <label>Brand ID</label>
