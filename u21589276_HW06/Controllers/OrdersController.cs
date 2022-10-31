@@ -15,34 +15,39 @@ namespace u21589276_HW06.Controllers
     {
         private BikeStoresEntities db = new BikeStoresEntities();
         // GET: Orders
-        public ActionResult Orders(string dateSearch,  string currentFilter, string sortOrder, int? page)
+        public ActionResult Orders(DateTime? dateSearch,  string currentFilter, string sortOrder, int? page)
         {
             int pageSize = 10;
             int pageNumber = (page ?? 1);
 
-            ViewBag.CurrentSort = sortOrder;
-            if (dateSearch != null)
-            {
-                page = 1;
-            }
-            else
-            {
-                dateSearch = currentFilter;
-            }
-
             var ordersviewModel = new ordersVm();
-            ordersviewModel.Orders = db.orders.ToList().ToPagedList(pageNumber, pageSize);
-            ordersviewModel.OrderItems = db.order_items.ToList();
-            ordersviewModel.Products = db.products.ToList();
+            ViewBag.CurrentSort = sortOrder;
+
+            if (dateSearch == null)
+            {
+                
+                page = 1;
+                ordersviewModel.Orders = db.orders.ToList().ToPagedList(pageNumber, pageSize);
+                ordersviewModel.OrderItems = db.order_items.ToList();
+                ordersviewModel.Products = db.products.ToList();
+            }
+            else if (dateSearch != null)
+            {
+            
+                ordersviewModel.Orders = db.orders.ToList().Where(o => o.order_date == dateSearch).ToPagedList(pageNumber, pageSize);
+                ordersviewModel.OrderItems = db.order_items.ToList();
+                ordersviewModel.Products = db.products.ToList();      
+                //dateSearch = currentFilter;
+            }
 
             //return results according to search
-            if (!String.IsNullOrEmpty(dateSearch))
-            {
-                ordersviewModel.Orders = db.orders.ToList().Where(p => p.order_date.ToString().Contains(dateSearch)).ToPagedList(pageNumber, pageSize);
-            }
-            ViewBag.CurrentFilter = dateSearch;
+            //if (!String.IsNullOrEmpty(dateSearch))
+            //{
+            //    ordersviewModel.Orders = db.orders.ToList().Where(o => o.order_date == dateSearch)).ToPagedList(pageNumber, pageSize);
+            //}
 
-           
+            ViewBag.CurrentFilter = dateSearch;
+      
             return View(ordersviewModel);
         }
     }
