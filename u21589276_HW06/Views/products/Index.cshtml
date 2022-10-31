@@ -63,13 +63,13 @@
                 }
             }
             <td>
-
-                @Html.ActionLink("Edit", "Edit", new { id = item.product_id }, new { @class = "btn btn-primary" }) |
-                <button class="btn btn-info" id="@item.product_id" onclick="showDetails(this.id)">Details</button>|
-                @Html.ActionLink("Delete", "Delete", new { id = item.product_id }, new { @class = "btn btn-danger" })
+                <button class="btn btn-primary" id="@item.product_id" onclick="Edititm(this.id)">Edit</button> |
+                <button class="btn btn-info" id="@item.product_id" onclick="showDetails(this.id)">Details</button> |
+                <button class="btn btn-danger" id="@item.product_id" onclick="deleteitem(this.id)">Delete</button>
             </td>
         </tr>
     }
+
 
 </table>
 
@@ -98,12 +98,6 @@
 <script type="text/javascript">
 
     function showDetails(prodId) {
-        //var url = "/products/Details/showDetails?id="+prodId;
-        //$("#prodModalbody").load(url, function () {
-        //    $("#produuctsModalCenter").modal("show");
-
-        //})
-
         $.ajax({
                url: '/products/Details/',
                type: 'GET',
@@ -118,6 +112,35 @@
           });
     }
 
+    function deleteitem(proId) {
+        $.ajax({
+            url: '/products/Delete/',
+            type: 'GET',
+            data: { id: proId },
+            success: function (response) {
+                $('#prodModalbody').html(response);
+                $('#produuctsModalCenter').modal('show');
+            },
+            error: function () {
+                alert("There is some problem in the Details service! Check Controller or view.")
+            }
+        });
+    }
+
+    function Edititm(proID) {
+        $.ajax({
+            url: '/products/Edit/',
+            type: 'GET',
+            data: { id: proID },
+            success: function (response) {
+                $('#prodModalbody').html(response);
+                $('#produuctsModalCenter').modal('show');
+            },
+            error: function () {
+                alert("There is some problem in the Details service! Check Controller or view.")
+            }
+        });
+    }
 
     //ajax scripts
         $(document).ready(function () {
@@ -139,61 +162,6 @@
                     }
                 });
             });
-
-            
-        //    //returs details view
-        //       $(document).on('click', ".details", function (event) {
-        //           event.preventDefault();
-        //           event.stopImmediatePropagation();
-
-        //           $.ajax({
-        //               url: '/products/Details',
-        //               type: 'GET',
-        //               success: function (data) {
-        //                   $('#prodModalbody').html(data);
-        //                   $('#produuctsModalCenter').modal('show');
-        //               },
-        //               error: function () {
-        //                   alert("There is some problem in the Details service! Check Controller or view.")
-        //               }
-        //           });
-        //    });
-
-
-        //    //returns Edit view
-        //    $(document).on('click', '#ED', function (event) {
-        //        event.preventDefault();
-        //        event.stopImmediatePropagation();
-
-        //        $.ajax({
-        //            url: '/products/Edit',
-        //            type: 'GET',
-        //            success: function (data) {
-        //                $('#prodModalbody').html(data);
-        //                $('#produuctsModalCenter').modal('show');
-        //            },
-        //            error: function () {
-        //                alert("There is some problem in the Edit service! Check Controller or view.")
-        //            }
-        //        });
-        //    });
-
-        //    $(document).on('click', '#', function (event) {
-        //        event.preventDefault();
-        //        event.stopImmediatePropagation();
-
-        //        $.ajax({
-        //            url: '/products/Delete',
-        //            type: 'GET',
-        //            success: function (data) {
-        //                $('#prodModalbody').html(data);
-        //                $('#produuctsModalCenter').modal('show');
-        //            },
-        //            error: function () {
-        //                alert("There is some problem in the Delete service! Check Controller or view.")
-        //            }
-        //        });
-        //    });
 
         });
 </script>

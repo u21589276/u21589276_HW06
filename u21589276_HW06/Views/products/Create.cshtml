@@ -61,6 +61,7 @@
         $("#createprodbtn").on("click", () => {
             $.post({
                 url: "@Url.Action("Createprod", "products")",
+                type: "POST"
                 data: {
                     name: $("#prodName").val(),
                     price: $("#prodPrice").val(),
@@ -70,7 +71,6 @@
                 },
                 success: (data) => {
                     let msg = JSON.parse(data);
-
                     alert(msg.message);
                 }
             });
