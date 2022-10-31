@@ -14,7 +14,7 @@
 <div class="container">
     <div class="card">
         <div class="card-header">
-            @Model.Products[0].product_name
+            <h4>@Model.Products[0].product_name</h4><br />
         </div>
         <div class="card-body">
             <p><b>Name:</b> @Model.Products[0].product_name</p>
@@ -39,39 +39,42 @@
             }</p>
             <br />
         </div>
-        <ul class="list-group list-group-flush">
-            <li class="list-group-item">
-                <div class="row">
-                    <div class="col-sm-6"><b>Store</b></div>
-                    <div class="col-sm-6"><b>Quantity</b></div>
-                </div>
-            </li>
-            @foreach (var store in Model.Stores)
-            {
+        <div>
+            <ul class="list-group" style="width: 50rem;">
                 <li class="list-group-item">
                     <div class="row">
-                        <div class="col-sm-6">@store.store_name</div>
-                        <div class="col-sm-6">
-                            @foreach (var stocks in Model.Stock)
-                            {
-                                if (store.store_id == stocks.store_id)
+                        <div class="col-sm-6"><b>Store</b></div>
+                        <div class="col-sm-6"><b>Quantity</b></div>
+                    </div>
+                </li>
+                @foreach (var store in Model.Stores)
+                {
+                    <li class="list-group-item">
+                        <div class="row">
+                            <div class="col-sm-6">@store.store_name</div>
+
+                            <div class="col-sm-6">
+                                @foreach (var stocks in Model.Stock)
                                 {
-                                    if (stocks.quantity != 0)
+                                    if (store.store_id == stocks.store_id)
                                     {
-                                        @stocks.quantity
-                                    }
-                                    else if (stocks.quantity == 0)
-                                    {
-                                        <span style="color:red">Out of Stock</span>
+                                        if (stocks.quantity != 0)
+                                        {
+                                            @stocks.quantity
+                                        }
+                                        else if (stocks.quantity == 0)
+                                        {
+                                            <span style="color:red">Out of Stock</span>
+                                        }
+
                                     }
 
                                 }
-
-                            }
+                            </div>
                         </div>
-                    </div>
-                </li>
-            }
-        </ul>
+                    </li>
+                }
+            </ul>
+        </div>
     </div>
 </div>
