@@ -27,6 +27,8 @@
 
 @foreach (var order in Model.Orders)
 {
+    decimal grandtot = 0;
+    decimal totl = 0;
     <h3>Order @order.order_id - @order.order_date</h3>
 
     <table class="table table-striped" id="ordertbl">
@@ -43,7 +45,7 @@
             {
                 decimal qty = orderItem.quantity;
                 var modelprice = Model.Products.Where(p => p.product_id == orderItem.product_id).ToList();
-                decimal totl = 0;
+                
                 totl = qty*modelprice[0].list_price;
 
                 if (order.order_id == orderItem.order_id)
@@ -63,16 +65,17 @@
                         <td id="qty @orderItem.product_id">@orderItem.quantity</td>
                         <td class="numeric" id="lineTot">@totl</td>
                     </tr>
-                    
+                    grandtot += totl;
                 }
             }
+        
         </tbody>
         <tfoot>
             <tr>
                 <td></td>
                 <td></td>
                 <td>Grand Total</td>
-                <td id="grandTot"></td>
+                <td id="grandTot"><b>@grandtot</b></td>
             </tr>
         </tfoot>
     </table>
